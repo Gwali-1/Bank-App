@@ -66,19 +66,26 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 
+const showTransactions = function (movements){
+
+  containerMovements.innerHTML = " ";
+  movements.forEach(function(value,index){
+    const transactionType = value < 0 ? 'withdrawal' : 'deposit'
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type
+       movements__type--${transactionType}">${index + 1} ${transactionType}</div>
+      <div class="movements__date">3 days ago</div>
+      <div class="movements__value">${value}</div>
+    </div>
+    `;
+
+    containerMovements.insertAdjacentHTML("afterbegin",html);
+
+    
+  });
+
+}
 
 
-// LECTURES
-
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
-
-
-let sample = ['a', 'b', 'c', 'd', 'e', 'f']
+showTransactions(account1.movements)
