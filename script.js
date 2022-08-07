@@ -82,10 +82,16 @@ const showTransactions = function (movements){
 
     containerMovements.insertAdjacentHTML("afterbegin",html);
 
-    
+
   });
 
 }
 
 
-showTransactions(account1.movements)
+const createUsername = function (accounts) {
+  accounts.forEach((obj)=>{
+    const username = obj.owner.toLowerCase().split(" ").map((name)=> name[0]).join("");
+    obj.username = username;
+  });
+}
+
