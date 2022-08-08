@@ -140,7 +140,6 @@ const  updateUi = function (account){
 
 
 //login
-
 let currentAcccount;
 
 
@@ -172,7 +171,7 @@ btnLogin.addEventListener("click", function (e){
 });
 
 
-
+//transfere
 btnTransfer.addEventListener("click",function(e){
   e.preventDefault()
   const amount = Number(inputTransferAmount.value);
@@ -192,8 +191,53 @@ btnTransfer.addEventListener("click",function(e){
     };
 
     inputTransferAmount.value = inputTransferTo.value = "";
+});
+
+
+//loan
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault()
+  const amount = Number(inputLoanAmount.value);
+
+  if(amount > 0 && currentAcccount.movements.some((mov) => mov >= amount * 0.1)){
+    //add amaount
+    currentAcccount.movements.push(amount);
+    //update ui
+    updateUi(currentAcccount)
+
+  }else{
+    console.log("cant give loan")
+  }
+
+  inputLoanAmount.value = "";
+});
+
+
+
+
+
+
+//close account
+btnClose.addEventListener("click",function (e){
+  e.preventDefault();
+  console.log("delete");
+
+  if(inputCloseUsername.value === currentAcccount.username &&
+    Number(inputClosePin.value) === currentAcccount.pin){
+
+      const index = accounts.findIndex( (acc) => acc.username === currentAcccount.username);
+
+        //delete account
+        accounts.splice(index,1);
+
+        //hide Ui
+        containerApp.style.opacity = 0;
+    };
+
+    inputCloseUsername.value = inputClosePin.value = "";
+
 })
 
-
-
+/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////
 
