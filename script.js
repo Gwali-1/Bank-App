@@ -93,17 +93,17 @@ const calculatedShowBalance = function (movements){
 
 
 
-const calcShowSummary = function (movements){
-  const income = movements.filter((val) => val > 0).reduce((accu,curr) => accu + curr,0);
+const calcShowSummary = function (account){
+  const income = account.movements.filter((val) => val > 0).reduce((accu,curr) => accu + curr,0);
   labelSumIn.textContent = `${income}€`
 
-  
-  const out = movements.filter((val) => val < 0).reduce((accu,curr) => accu 
+
+  const out = account.movements.filter((val) => val < 0).reduce((accu,curr) => accu 
   + Math.abs(curr),0);
   labelSumOut.textContent = `${out}€`
 
 
-  const interest =  movements.filter((val) => val > 0).map((val) => val * 1.2/100)
+  const interest =  account.movements.filter((val) => val > 0).map((val) => val * account.interestRate/100)
   .filter((val,i,arr) => {
     return val >= 1
   })
@@ -111,13 +111,51 @@ const calcShowSummary = function (movements){
   labelSumInterest.textContent = `${interest}€`;
 }
 
+// create username
+const createUsername = function (accounts) {
+  accounts.forEach((obj)=>{
+    const username = obj.owner.toLowerCase().split(" ").map((name)=> name[0]).join("");
+    obj.username = username;
+  });
+}
+createUsername(accounts);
+
+//login
+
+let currentAcccount;
 
 
-calcShowSummary(account1.movements);
+btnLogin.addEventListener("click", function (e){
+  //prevents form from submitting
+  e.preventDefault()
+  currentAcccount = accounts.find((account) => account.username === inputLoginUsername.value);
+  console.log(currentAcccount);
 
-calculatedShowBalance(account1.movements);
-showTransactions(account1.movements);
+  if(currentAcccount?.pin === Number(inputLoginPin.value)){
+    console.log("LOgin");
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
+    labelWelcome.textContent = `Welcome back ${currentAcccount.owner.split(" ")[0]}`;
+    containerApp.style.opacity = 100;
+
+    //clear input fields
+
+    inputLoginUsername.value = inputLoginPin.value = " ";
+    inputLoginPin.blur()
+    
+    //display trnsactions
+    showTransactions(currentAcccount.movements);
+
+    //display balance
+    calculatedShowBalance(currentAcccount.movements);
+
+    //display summary
+    calcShowSummary(currentAcccount);
+
+
+
+  }
+})
+
+
+
 
