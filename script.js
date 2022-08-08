@@ -64,9 +64,10 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 //transaction info
-const showTransactions = function (movements){
+const showTransactions = function (movements, sort = false){
   containerMovements.innerHTML = " ";
-  movements.forEach(function(value,index){
+  const movs = sort ? movements.slice().sort((a,b)=> a-b) : movements
+  movs.forEach(function(value,index){
     const transactionType = value < 0 ? 'withdrawal' : 'deposit'
     const html = `
     <div class="movements__row">
@@ -238,6 +239,40 @@ btnClose.addEventListener("click",function (e){
 
 })
 
+//sort
+let sorted = false
+btnSort.addEventListener("click", function(e){
+  e.preventDefault()
+  showTransactions(currentAcccount.movements,!sorted);
+  sorted =!sorted
+
+});
+
+
 /////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////
+
+
+
+const  movements = [200, 450, -400, 3000, -650, -130, 70, 1300]
+
+console.log(movements.some((mov)=> mov > 100000000));
+
+console.log(account4.movements.every((mov) => mov > 0))
+
+
+
+
+
+const arr = [1,4,2,6,8,50];
+
+
+for(const x of arr){
+
+  setTimeout(()=> console.log(x),x)
+
+
+};
+
+
 
