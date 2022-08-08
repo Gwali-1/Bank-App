@@ -61,13 +61,10 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 
 
-
+//transaction info
 const showTransactions = function (movements){
-
   containerMovements.innerHTML = " ";
   movements.forEach(function(value,index){
     const transactionType = value < 0 ? 'withdrawal' : 'deposit'
@@ -84,14 +81,20 @@ const showTransactions = function (movements){
 
 
   });
+};
 
-}
+
+//account balance
+const calculatedShowBalance = function (movements){
+    const balance =  movements.reduce((accu,curr) => accu + curr, 0);
+    labelBalance.textContent = `${balance}€`
+
+};
 
 
-const createUsername = function (accounts) {
-  accounts.forEach((obj)=>{
-    const username = obj.owner.toLowerCase().split(" ").map((name)=> name[0]).join("");
-    obj.username = username;
-  });
-}
+calculatedShowBalance(account1.movements);
+showTransactions(account1.movements);
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
