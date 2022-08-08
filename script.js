@@ -73,7 +73,7 @@ const showTransactions = function (movements){
       <div class="movements__type
        movements__type--${transactionType}">${index + 1} ${transactionType}</div>
       <div class="movements__date">3 days ago</div>
-      <div class="movements__value">${value}</div>
+      <div class="movements__value">${value}€</div>
     </div>
     `;
 
@@ -91,6 +91,29 @@ const calculatedShowBalance = function (movements){
 
 };
 
+
+
+const calcShowSummary = function (movements){
+  const income = movements.filter((val) => val > 0).reduce((accu,curr) => accu + curr,0);
+  labelSumIn.textContent = `${income}€`
+
+  
+  const out = movements.filter((val) => val < 0).reduce((accu,curr) => accu 
+  + Math.abs(curr),0);
+  labelSumOut.textContent = `${out}€`
+
+
+  const interest =  movements.filter((val) => val > 0).map((val) => val * 1.2/100)
+  .filter((val,i,arr) => {
+    return val >= 1
+  })
+  .reduce((accu,curr) => accu + curr,0);
+  labelSumInterest.textContent = `${interest}€`;
+}
+
+
+
+calcShowSummary(account1.movements);
 
 calculatedShowBalance(account1.movements);
 showTransactions(account1.movements);
