@@ -80,20 +80,40 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 
+
+const transactionDates = function (date){ 
+  const CalcDaysPassed = (date1,date2) => Math.round(Math.abs((date2 - date1)/ (1000 * 60 * 60 * 24)));
+
+  const daysPassed =  CalcDaysPassed(new Date(), date);
+
+  if(daysPassed === 0) return "Today";
+  if(daysPassed === 1) return "Yesterday";
+  if(daysPassed <= 7) return `${daysPassed} days ago`;
+  else{
+    const day = `${date.getDate ()}`.padStart(2,0);
+    const month = `${date.getMonth() + 1}`.padStart(2,0);
+    const year = date.getFullYear();
+    return `${day}/${month }/${year}`
+  }
+
+
+
+  
+  
+
+  
+
+
+}
 //transaction info
 const showTransactions = function (account, sort = false){
   containerMovements.innerHTML = " ";
   const movs = sort ? account.movements.slice().sort((a,b)=> a-b) :account.movements
   movs.forEach(function(value,index){
-    const date = new Date(account.movementsDates[index]);
 
-  const day = `${date.getDate ()}`.padStart(2,0);
-  const month = `${date.getMonth() + 1}`.padStart(2,0);
-  const year = date.getFullYear();
-
-  const displayDate = `${day}/${month }/${year}`;
+  const date = new Date(account.movementsDates[index]); 
+  const displayDate = transactionDates(date);
   
-
     const transactionType = value < 0 ? 'withdrawal' : 'deposit'
     const html = `
     <div class="movements__row">
@@ -301,3 +321,12 @@ btnSort.addEventListener("click", function(e){
 
 
 
+
+const future = new Date(2028, 11 , 19 , 15,23);
+
+console.log(+future);
+
+const daysPassed = (date1,date2) => (date2 - date1)/ (1000 * 60 * 60 * 24);
+
+
+console.log(daysPassed(new Date(2028, 3,19),new Date(2028, 3,27)))
