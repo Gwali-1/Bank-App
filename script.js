@@ -322,11 +322,3 @@ btnSort.addEventListener("click", function(e){
 
 
 
-const future = new Date(2028, 11 , 19 , 15,23);
-
-console.log(+future);
-
-const daysPassed = (date1,date2) => (date2 - date1)/ (1000 * 60 * 60 * 24);
-
-
-console.log(daysPassed(new Date(2028, 3,19),new Date(2028, 3,27)))
