@@ -81,16 +81,25 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 //transaction info
-const showTransactions = function (movements, sort = false){
+const showTransactions = function (account, sort = false){
   containerMovements.innerHTML = " ";
-  const movs = sort ? movements.slice().sort((a,b)=> a-b) : movements
+  const movs = sort ? account.movements.slice().sort((a,b)=> a-b) :account.movements
   movs.forEach(function(value,index){
+    const date = new Date(account.movementsDates[index]);
+
+  const day = `${date.getDate ()}`.padStart(2,0);
+  const month = `${date.getMonth() + 1}`.padStart(2,0);
+  const year = date.getFullYear();
+
+  const displayDate = `${day}/${month }/${year}`;
+  
+
     const transactionType = value < 0 ? 'withdrawal' : 'deposit'
     const html = `
     <div class="movements__row">
       <div class="movements__type
        movements__type--${transactionType}">${index + 1} ${transactionType}</div>
-      <div class="movements__date">3 days ago</div>
+      <div class="movements__date">${displayDate}</div>
       <div class="movements__value">${value.toFixed(2)}€</div>
     </div>
     `;
@@ -143,7 +152,7 @@ createUsername(accounts);
 
 const  updateUi = function (account){
   //display trnsactions
-  showTransactions(account.movements);
+  showTransactions(account);
 
   //display balance
   calculatedShowBalance(account);
@@ -173,6 +182,18 @@ btnLogin.addEventListener("click", function (e){
 
     labelWelcome.textContent = `Welcome back ${currentAcccount.owner.split(" ")[0]}`;
     containerApp.style.opacity = 100;
+
+
+    const currentDate = new Date();
+    const day = `${currentDate.getDay()}`.padStart(2,0);
+    const month = `${currentDate.getMonth()}`.padStart(2,0);
+    const year = currentDate.getFullYear();
+    const hour = currentDate.getHours();
+    const mins = currentDate.getMinutes();
+
+
+labelDate.textContent =  `${day}/${month + 1}/${year}, ${hour}:${mins}`;
+
 
     //clear input fields
 
@@ -204,6 +225,10 @@ btnTransfer.addEventListener("click",function(e){
       //doing transfere
       currentAcccount.movements.push(-amount);
       recieverAcc.movements.push(amount);
+      //add date
+      currentAcccount.movementsDates.push(new Date().toISOString());
+      recieverAcc.movementsDates.push(new Date().toISOString());
+
 
       updateUi(currentAcccount);
     };
@@ -220,6 +245,11 @@ btnLoan.addEventListener("click", function (e) {
   if(amount > 0 && currentAcccount.movements.some((mov) => mov >= amount * 0.1)){
     //add amaount
     currentAcccount.movements.push(amount);
+
+    //add Dtae
+    currentAcccount.movementsDates.push(new Date().toISOString());
+  
+
     //update ui
 
   }else{
@@ -255,14 +285,15 @@ btnClose.addEventListener("click",function (e){
 
 })
 
-//sort
+// sort
 let sorted = false
 btnSort.addEventListener("click", function(e){
   e.preventDefault()
-  showTransactions(currentAcccount.movements,!sorted);
+  showTransactions(currentAcccount,!sorted);
   sorted =!sorted
 
 });
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -270,3 +301,52 @@ btnSort.addEventListener("click", function(e){
 
 
 
+
+// console.log(Math.floor(5 / 2))
+
+
+// 7 % 2 === 0 && console.log("even")
+
+// document.querySelectorAll(".movements__row")
+
+// Array.from(document.querySelectorAll(".movements__row")
+// ).forEach((val,i)=>{
+//   if(i % 2 === 0){
+//     val.style.backgroundColor = "red";
+//   }
+// });
+
+// // btnSort.addEventListener("click",()=>{
+// // document.querySelectorAll(".movements__row")
+// // .forEach((val,i)=>{
+// //   if(i % 2 === 0){
+// //     val.style.backgroundColor = "red";
+// //   }
+// // });
+// // })
+
+// const d = 280_746_000
+
+// console.log(d);
+
+// console.log(Number.MAX_SAFE_INTEGER)
+// console.log(628893287398288278737039209028n)
+
+// console.log(2.5.toFixed(2));
+
+
+
+// 
+
+//working with dates
+
+// const future = new Date(2028, 11 , 19 , 15,23);
+// console.log(future)
+// console.log(future.getFullYear())
+// console.log(future.getMonth())
+// console.log(future.getDate())
+// console.log(future.toISOString())
+// console.log(future.getTime())
+
+// console.log(future.setFullYear(2050));
+// console.log(future )
