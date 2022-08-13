@@ -184,10 +184,32 @@ const  updateUi = function (account){
 }
 
 
+const startLogOutTimer = function (){
+  let time = 300;
+
+  const tick = function(){
+    const min = String(Math.trunc(time / 60)).padStart(2,"0");
+    const sec = String(time % 60).padStart(2,"0");
+    labelTimer.textContent = `${min}:${sec}`;
+
+  
+    if(time === 0){
+      clearInterval(timer)
+      labelWelcome.textContent = `Login in to get started`;
+      containerApp.style.opacity = 0;
+    }
+
+    time--;
+    
+  };
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
 
 
 //login
-let currentAcccount;
+let currentAcccount,timer;
 
 
 btnLogin.addEventListener("click", function (e){
@@ -211,16 +233,16 @@ btnLogin.addEventListener("click", function (e){
     const hour = currentDate.getHours();
     const mins = currentDate.getMinutes();
 
-
-labelDate.textContent =  `${day}/${month + 1}/${year}, ${hour}:${mins}`;
+    labelDate.textContent =  `${day}/${month + 1}/${year}, ${hour}:${mins}`;
 
 
     //clear input fields
 
     inputLoginUsername.value = inputLoginPin.value = "";
-    inputLoginPin.blur()
+    inputLoginPin.blur();
     
-
+    if(timer) clearInterval(timer);
+    timer = startLogOutTimer();
     updateUi(currentAcccount);
 
     
@@ -251,6 +273,9 @@ btnTransfer.addEventListener("click",function(e){
 
 
       updateUi(currentAcccount);
+
+      clearInterval(timer);
+      timer = startLogOutTimer();
     };
 
     inputTransferAmount.value = inputTransferTo.value = "";
@@ -263,19 +288,21 @@ btnLoan.addEventListener("click", function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if(amount > 0 && currentAcccount.movements.some((mov) => mov >= amount * 0.1)){
+
+    setTimeout(function (){
     //add amaount
+
     currentAcccount.movements.push(amount);
+    //add date
 
-    //add Dtae
     currentAcccount.movementsDates.push(new Date().toISOString());
-  
+      //update UI
+    updateUi(currentAcccount)
+    },3000)
 
-    //update ui
-
-  }else{
-    console.log("cant give loan")
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
-  updateUi(currentAcccount)
   inputLoanAmount.value = "";
 });
 
@@ -316,9 +343,27 @@ btnSort.addEventListener("click", function(e){
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////LECTURES
 
 
 
+// const arg = ["olive","mackerel"]
+// const t = setTimeout((a,b)=>{
+//   console.log( `pizza ordered with ${a} and ${b}`)
+// },5000,...arg);
 
+// if(arg.includes("olive")){
+//   clearTimeout(t  )
+// } 
+
+
+// // let timer = 0;
+// // setInterval(() => {
+// //   timer++;
+// //   console.log(timer);
+  
+// // }, 1000);
+
+// setInterval(() => {
+//   const date = new Date()
+//   console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+// }, 1000);
