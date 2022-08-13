@@ -343,27 +343,3 @@ btnSort.addEventListener("click", function(e){
 
 
 
-
-
-
-// const arg = ["olive","mackerel"]
-// const t = setTimeout((a,b)=>{
-//   console.log( `pizza ordered with ${a} and ${b}`)
-// },5000,...arg);
-
-// if(arg.includes("olive")){
-//   clearTimeout(t  )
-// } 
-
-
-// // let timer = 0;
-// // setInterval(() => {
-// //   timer++;
-// //   console.log(timer);
-  
-// // }, 1000);
-
-// setInterval(() => {
-//   const date = new Date()
-//   console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
-// }, 1000);
